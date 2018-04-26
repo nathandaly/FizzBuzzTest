@@ -12,67 +12,53 @@ use PHPUnit\Framework\TestCase;
 class FizzBuzzTest extends TestCase
 {
     /**
-     * @expectedExceptionCode 500
-     * @expectedExceptionMessage "Arguments must be of type integer only."
+     * @var \FizzBuzzTest\FizzBuzz
      */
-    public function testMethodAcceptsOnlyIntegers()
-    {
+    protected $fizzbuzz;
 
+    public function setUp()
+    {
+        $this->fizzbuzz = new \FizzBuzzTest\FizzBuzz();
     }
 
-    /**
-     * @expectedExceptionCode 500
-     * @expectedExceptionMessage "Output must be of type integer or string only."
-     */
-    public function testMethodOutputsIntegerOrString()
+    public function testMethodReturnGenerator()
     {
-
+        $this->assertInstanceOf('Generator', $this->fizzbuzz->getFizzBuzzResult(100, 1));
     }
 
-    /**
-     * Asserts inputs mod 3 print "Fizz".
-     */
     public function testDivisibleByThreePrintsFizz()
     {
+        $this->expectOutputString('Fizz:12');
 
+        foreach ($this->fizzbuzz->getFizzBuzzResult(12, 12) as $value) {
+            echo $value;
+        }
     }
 
-    /**
-     * Asserts inputs mod 3 print "Buzz".
-     */
-    public function testDivisibleByFivePrintsBuzz()
+    public function testDivisibleByFiveMustNotPrintFizz()
     {
+        $this->expectOutputString('Fizz:12');
 
+        foreach ($this->fizzbuzz->getFizzBuzzResult(12, 12) as $value) {
+            echo $value;
+        }
     }
 
-    /**
-     * Asserts inputs mod 3 and 5 print "Fizz Buzz".
-     */
-    public function testDivisibleByThreeAndFivePrintsFizzBuzz()
+    public function testDivisibleByThreeMustNotPrintFizz()
     {
+        $this->expectOutputString('Buzz:50');
 
+        foreach ($this->fizzbuzz->getFizzBuzzResult(50, 50) as $value) {
+            echo $value;
+        }
     }
 
-    /**
-     * Asserts inputs not of mod 3 and 5 print each integer.
-     */
     public function testNonDivisibleByThreeOrFivePrintsTheInputInteger()
     {
+        $this->expectOutputString('98:98');
 
-    }
-
-    /**
-     * Assert "Fizz", "Buzz", "Integer" with a data set.
-     * @dataProvider fizzBuzzTestDataProvider
-     */
-    public function testFizzBuzzIntegerRangeWithDataSet(int $value, $expected)
-    {
-        $this->assertEquals($expected, $value);
-    }
-
-    public function fizzBuzzTestDataProvider() : array
-    {
-        return [
-        ];
+        foreach ($this->fizzbuzz->getFizzBuzzResult(98, 98) as $value) {
+            echo $value;
+        }
     }
 }
